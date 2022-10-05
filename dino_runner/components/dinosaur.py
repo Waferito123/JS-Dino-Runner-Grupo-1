@@ -7,6 +7,7 @@ from dino_runner.utils.constants import RUNNING, JUMPING, DUCKING
 class Dinosaur(Sprite):
     X_POS = 80
     Y_POS = 310
+    Y_POS_DUCK = 340
     JUMP_VELOCITY = 8.5
 
     def __init__(self):
@@ -67,7 +68,7 @@ class Dinosaur(Sprite):
         self.image = DUCKING[self.step_index // 5]
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.X_POS
-        self.dino_rect.y = self.Y_POS + 35
+        self.dino_rect.y = self.Y_POS_DUCK
         self.step_index += 1
 
     def draw(self, screen):

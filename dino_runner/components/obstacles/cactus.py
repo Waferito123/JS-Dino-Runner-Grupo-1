@@ -6,4 +6,3 @@ class Cactus(Obstacle):
         type = random.randint(0, 2)
         super().__init__(images, type)
         self.rect.y = 325
-        
