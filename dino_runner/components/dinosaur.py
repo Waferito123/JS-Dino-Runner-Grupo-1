@@ -18,31 +18,32 @@ class Dinosaur(Sprite):
 
         self.dino_run = True
         self.dino_jump = False
-        self.dino_ducking = False
+        self.dino_duck = False
         self.jump_velocity = self.JUMP_VELOCITY
 
     def update(self, user_input):
         if self.dino_run:
             self.run()
+        elif self.dino_duck:
+            self.duck()
         elif self.dino_jump:
             self.jump()
-        elif self.dino_ducking:
-            self.duck()
 
-        if user_input[pygame.K_UP] and not self.dino_jump and not self.dino_ducking:
-            self.dino_jump = True
-            self.dino_run = False
-            self.dino_ducking = False
-        elif user_input[pygame.K_DOWN] and not self.dino_jump:
-            self.dino_ducking = True
-            self.dino_jump = False
-            self.dino_run = False
-        elif not user_input[pygame.K_DOWN] and not self.dino_jump:
-            self.dino_ducking = False
-            self.dino_jump = False
-            self.dino_run = True
+        if not self.dino_jump:
+            if user_input[pygame.K_UP]:
+                self.dino_jump = True
+                self.dino_run = False
+                self.dino_duck = False
+            elif user_input[pygame.K_DOWN]:
+                self.dino_duck = True
+                self.dino_jump = False
+                self.dino_run = False
+            else:
+               self.dino_duck = False
+               self.dino_jump = False
+               self.dino_run = True
 
-        if self.step_index >= 10:
+        if self.step_index >= 9:
             self.step_index = 0
 
     def jump(self):
@@ -56,17 +57,17 @@ class Dinosaur(Sprite):
             self.jump_velocity = self.JUMP_VELOCITY
 
     def run(self):
-        self.image = RUNNING[0] if self.step_index < 5 else RUNNING[1]
+        self.image = RUNNING[self.step_index // 5]
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.X_POS
         self.dino_rect.y = self.Y_POS
         self.step_index += 1
 
     def duck(self):
-        self.image = DUCKING[0] if self.step_index < 5 else DUCKING[1]
+        self.image = DUCKING[self.step_index // 5]
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.X_POS
-        self.dino_rect.y = 350
+        self.dino_rect.y = self.Y_POS + 35
         self.step_index += 1
 
     def draw(self, screen):
