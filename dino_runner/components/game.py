@@ -36,6 +36,7 @@ class Game:
     def run(self):
         self.playing = True
         self.obstacle_manager.reset_obstacles()
+        self.score.reset_score()
         while self.playing:
             self.events()
             self.update()
@@ -82,8 +83,21 @@ class Game:
             text_rect.center = (half_screen_width, half_screen_height)
             self.screen.blit(text_component, text_rect)
         else:
-            # Tarea: volver a jugar, numero de muertes y puntaje
-            pass
+            font = pygame.font.Font(FONT_STYLE, 30)
+            text_component = font.render("Press any key to try again", True, (0, 0, 0))
+            text_rect = text_component.get_rect()
+            text_rect.center = (half_screen_width, half_screen_height)
+            self.screen.blit(text_component, text_rect)
+
+            text_score_component = font.render(f"Total score: {self.score}", True, (0, 0, 0))
+            text_score_rect = text_score_component.get_rect()
+            text_score_rect.center = (half_screen_width, half_screen_height + 40)
+            self.screen.blit(text_score_component, text_score_rect)
+
+            text_death_component = font.render(f"Deaths: {self.death_count}", True, (0, 0, 0))
+            text_death_rect = text_death_component.get_rect()
+            text_death_rect.center = (half_screen_width, half_screen_height + 80)
+            self.screen.blit(text_death_component, text_death_rect)
 
         self.screen.blit(RUNNING[0], (half_screen_width - 30, half_screen_height - 140))   # mostrar icono
         pygame.display.update()  # actualizar ventana
@@ -99,3 +113,5 @@ class Game:
     def on_death(self):
         self.playing = False
         self.death_count += 1
+        self.game_speed = 20
+
