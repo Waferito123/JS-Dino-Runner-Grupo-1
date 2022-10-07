@@ -72,7 +72,7 @@ class Game:
         self.draw_background()
         self.player.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
-        self.score.draw(self.screen)
+        self.score.draw(self.screen, self)
         self.power_up_manager.draw(self.screen)
         self.heart_manager.draw(self.screen)
         self.draw_power_up_active()

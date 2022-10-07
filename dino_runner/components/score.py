@@ -1,6 +1,4 @@
-import pygame
-
-from dino_runner.utils.constants import FONT_STYLE
+from dino_runner.utils.constants import HEART
 
 
 class Score:
@@ -11,13 +9,14 @@ class Score:
         self.score += 1
         if self.score % 100 == 0:
             game.game_speed += 2
+        
+        if self.score % 1000 == 0:
+            game.heart_manager.increase_heart()
 
-    def draw(self, screen):
-        font = pygame.font.Font(FONT_STYLE, 22)
-        text_component = font.render(f"Points: {self.score}", True, (0, 0, 0))
-        text_rect = text_component.get_rect()
-        text_rect.center = (1000, 50)
-        screen.blit(text_component, text_rect)
+    def draw(self, screen, game):
+        game.draw_message(f"Points: {self.score}", 1000, 50, 22)
+        game.draw_message("1000 points = ", 950, 550, 22)
+        screen.blit(HEART, (1025, 537))
 
     def reset_score(self):
         self.score = 0

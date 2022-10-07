@@ -29,4 +29,4 @@ class PowerUpManager:
 
     def reset_power_ups(self):
         self.power_ups = []
-        self.when_appears = randint(200, 300)
+        self.when_appears = randint(300, 400)
