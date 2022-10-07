@@ -6,7 +6,6 @@ from dino_runner.utils.constants import FONT_STYLE
 class Score:
     def __init__(self):
         self.score = 0
-        self.last_score = 0
 
     def update(self, game):
         self.score += 1
@@ -22,3 +21,4 @@ class Score:
 
     def reset_score(self):
         self.score = 0
+        
