@@ -28,7 +28,8 @@ class Dinosaur(Sprite):
         self.dino_duck = False
         self.jump_velocity = self.JUMP_VELOCITY
 
-        self.has_power_up = False
+        self.has_power_up_shield = False
+        self.has_power_up_cloud = False
         self.power_up_time_up = 0
 
     def update(self, user_input):
@@ -83,7 +84,12 @@ class Dinosaur(Sprite):
     def draw(self, screen):
         screen.blit(self.image, (self.dino_rect.x, self.dino_rect.y))
 
-    def on_pick_power_up(self, start_time, duration, type):
-        self.has_power_up = True
+    def on_pick_power_up_shield(self, start_time, duration, type):
+        self.has_power_up_shield = True
+        self.power_up_time_up = start_time + (duration * 1000)
+        self.type = type
+
+    def on_pick_power_up_cloud(self, start_time, duration, type):
+        self.has_power_up_cloud = True
         self.power_up_time_up = start_time + (duration * 1000)
         self.type = type

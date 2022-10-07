@@ -6,7 +6,7 @@ from dino_runner.components.powerups.power_up_manager import PowerUpManager
 from dino_runner.components.powerups.shield import Shield
 from dino_runner.components.score import Score
 
-from dino_runner.utils.constants import BG, DEFAULT_TYPE, FONT_STYLE, ICON, RUNNING, SCREEN_HEIGHT, SCREEN_WIDTH, SHIELD_TYPE, TITLE, FPS
+from dino_runner.utils.constants import BG, DEFAULT_TYPE, FONT_STYLE, HAMMER_TYPE, ICON, RESET, RUNNING, SCREEN_HEIGHT, SCREEN_WIDTH, SHIELD_TYPE, TITLE, FPS
 
 
 class Game:
@@ -68,7 +68,7 @@ class Game:
 
     def draw(self):
         self.clock.tick(FPS)
-        self.screen.fill((255, 255, 255))
+        self.screen.fill((255, 128, 0))
         self.draw_background()
         self.player.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
@@ -93,13 +93,15 @@ class Game:
         half_screen_height = SCREEN_HEIGHT // 2
         half_screen_width = SCREEN_WIDTH // 2
         if self.death_count == 0:  # mostrar mensaje de bienvenida
-            self.draw_message("Press any key to start", half_screen_width, half_screen_height, 30)
+            self.draw_message("Welcome to DinnoRunner", half_screen_width, half_screen_height, 40)
+            self.draw_message("Press any key to start", half_screen_width, half_screen_height + 50, 30)
+            self.screen.blit(RUNNING[0], (half_screen_width - 30, half_screen_height - 140))
         else:
             self.draw_message("Press any key to play again", half_screen_width, half_screen_height, 30)
             self.draw_message(f"Total Score: {self.score.score - 1}", half_screen_width, half_screen_height + 40, 25)
             self.draw_message(f"Deaths: {self.death_count}", half_screen_width, half_screen_height + 80, 25)
+            self.screen.blit(RESET, (half_screen_width - 30, half_screen_height - 140))
 
-        self.screen.blit(RUNNING[0], (half_screen_width - 30, half_screen_height - 140))   # mostrar icono
         pygame.display.update()  # actualizar ventana
         self.handle_key_events_on_menu()  # escuchar eventos
 
@@ -131,7 +133,7 @@ class Game:
         self.screen.blit(text_component, text_rect)
 
     def draw_power_up_active(self):
-        if self.player.has_power_up:
+        if self.player.has_power_up_shield:
             time_to_show = round((self.player.power_up_time_up - pygame.time.get_ticks()) / 1000)
             if time_to_show >= 0:
                 self.draw_message(f"{self.player.type.capitalize()} enabled for {time_to_show} seconds",
@@ -139,5 +141,17 @@ class Game:
                 40,
                 18)
             else:
-                self.player.has_power_up = False
+                self.player.has_power_up_shield = False
+                self.player.type = DEFAULT_TYPE
+        elif self.player.has_power_up_cloud:
+            time_to_show = round((self.player.power_up_time_up - pygame.time.get_ticks()) / 1000)
+            if time_to_show >= 0:
+                self.draw_message(f"Slow down is enabled for {time_to_show} seconds",
+                500,
+                80,
+                18)
+                self.game_speed - 10
+            else:
+                self.game_speed + 5
+                self.player.has_power_up_cloud = False
                 self.player.type = DEFAULT_TYPE
